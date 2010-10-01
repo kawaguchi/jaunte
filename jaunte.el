@@ -126,8 +126,8 @@
         (while (not (null jaunte--hints))
           (setq k (read-event (concat "Jaunte to " key)))
           (if (and (not (null key))
-                   (or (equal k 13) ;; C-j
-                       (equal k 10) ;; C-m
+                   (or (equal k 13) ;; C-m
+                       (equal k 10) ;; C-j
                        (equal k 'return))) ;; RET
               (jaunte-search key t)
             (setq key (concat key (char-to-string k)))
