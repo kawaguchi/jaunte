@@ -10,7 +10,7 @@
 
 (defvar jaunte-keys (string-to-char-list "jklasdfghyuiopqwertnmzxcvb"))
 
-(defface jaunte-key-face
+(defface jaunte-hint-face
   '((t
      (:foreground "white"
       :background "blue"
@@ -98,7 +98,7 @@
       (setq end (point))
 
       (setq overlay (make-overlay begin end))
-      (overlay-put overlay' before-string (propertize key 'face 'jaunte-key-face))
+      (overlay-put overlay' before-string (propertize key 'face 'jaunte-hint-face))
       (overlay-put overlay 'window (selected-window))
       (overlay-put overlay 'invisible t)
       (overlay-put overlay 'width width)
