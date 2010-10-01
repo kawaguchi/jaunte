@@ -8,7 +8,7 @@
 ;; (require 'jaunte)
 ;; (global-set-key (kbd "C-c C-j") 'jaunte)
 
-(defvar jaunte-keys (string-to-char-list "jklasdfghyuiopqwertnmzxcvb"))
+(defvar jaunte-keys (mapcar #'identity "jklasdfghyuiopqwertnmzxcvb"))
 
 (defface jaunte-hint-face
   '((t
@@ -124,7 +124,7 @@
   (unwind-protect
       (let (k key)
         (while (not (null jaunte--hints))
-          (setq k (read-key (concat "Jaunte to " key)))
+          (setq k (read-event (concat "Jaunte to " key)))
           (if (and (not (null key))
                    (or (= k 13)   ;; RET
                        (= k 10))) ;; \n
