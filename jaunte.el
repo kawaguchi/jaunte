@@ -45,7 +45,9 @@
          (save-window-excursion
            (select-window window)
            (move-to-window-line 0)
-           (let ((point (jaunte-forward-word))
+           (let ((point (if (looking-at "\\w")
+                            (point)
+                            (jaunte-forward-word)))
                  (window-end (window-end window))
                  (key (jaunte-make-key index)))
              (while (< point window-end)
