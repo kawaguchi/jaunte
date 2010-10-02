@@ -20,9 +20,13 @@
 
 (defvar jaunte--hints nil)
 
-(defun jaunte-forward-word (&optional arg)
-  (forward-word (or arg 1))
-  (if (not (eobp)) (backward-word))
+(defun jaunte-forward-word ()
+  "Move to beginning of a forward word, and return point."
+  (interactive)
+  (if (looking-at "\\w")
+      (forward-word))
+  (if (re-search-forward "\\w" nil 'eob)
+      (backward-char))
   (point))
 
 (defun jaunte-make-hint (key overlay window point)
@@ -50,7 +54,7 @@
                                               (jaunte-make-overlay point key)
                                               window
                                               point))
-               (jaunte-forward-word 2)
+               (jaunte-forward-word)
                (setq index (1+ index)
                      point (point)
                      key (jaunte-make-key index)))))))
