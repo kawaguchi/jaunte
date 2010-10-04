@@ -18,6 +18,26 @@
       :bold nil)))
   nil)
 
+(defface jaunte-hint-face2
+  '((t
+     (:foreground "white"
+      :background "royalblue"
+      :italic nil
+      :bold nil)))
+  nil)
+
+(defvar jaunte-hint-faces '(jaunte-hint-face jaunte-hint-face2))
+
+(defun jaunte-cycle-reset (symbol)
+  (put symbol 'jaunte-cycle-index 0))
+
+(defun jaunte-cycle (symbol)
+  (let ((index (or (get symbol 'jaunte-cycle-index)
+                   (jaunte-cycle-reset symbol)))
+        (list (symbol-value symbol)))
+    (put symbol 'jaunte-cycle-index (1+ index))
+    (nth (% index (length list)) list)))
+
 (defvar jaunte--hints nil)
 
 (defun jaunte-forward-word ()
@@ -39,6 +59,7 @@
 
 (defun jaunte-show-hints ()
   (let ((index 0))
+    (jaunte-cycle-reset 'jaunte-hint-faces)
     (mapcar
      (lambda (window)
        (save-excursion
@@ -100,7 +121,7 @@
         (forward-char))
 
       (setq overlay (make-overlay begin (point)))
-      (overlay-put overlay 'display (propertize key 'face 'jaunte-hint-face))
+      (overlay-put overlay 'display (propertize key 'face (jaunte-cycle 'jaunte-hint-faces)))
       (overlay-put overlay 'window (selected-window))
       (overlay-put overlay 'priority 100)
       overlay)))
