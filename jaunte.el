@@ -120,6 +120,10 @@
         (setq rest (- rest (char-width (char-after))))
         (forward-char))
 
+      (if (and (oddp width)
+               (= 2 (char-width (char-before))))
+          (setq key (concat key " ")))
+
       (setq overlay (make-overlay begin (point)))
       (overlay-put overlay 'display (propertize key 'face (jaunte-cycle 'jaunte-hint-faces)))
       (overlay-put overlay 'window (selected-window))
