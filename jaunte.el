@@ -90,24 +90,18 @@
 
 (defun jaunte-make-overlay (point key)
   (save-excursion
-    (select-window window)
     (goto-char point)
-
     (let* ((width (length key))
            (rest width)
            (begin point)
-           end
            overlay)
       (while (and (> rest 0) (not (eolp)))
         (setq rest (- rest (char-width (char-after))))
         (forward-char))
-      (setq end (point))
 
-      (setq overlay (make-overlay begin end))
-      (overlay-put overlay' before-string (propertize key 'face 'jaunte-hint-face))
+      (setq overlay (make-overlay begin (point)))
+      (overlay-put overlay 'display (propertize key 'face 'jaunte-hint-face))
       (overlay-put overlay 'window (selected-window))
-      (overlay-put overlay 'invisible t)
-      (overlay-put overlay 'width width)
       (overlay-put overlay 'priority 100)
       overlay)))
 
