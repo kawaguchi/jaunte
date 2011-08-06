@@ -8,7 +8,7 @@
 ;; (require 'jaunte)
 ;; (global-set-key (kbd "C-c C-j") 'jaunte)
 
-(defvar jaunte-keys (mapcar #'identity "jklasdf"))
+(defvar jaunte-keys (mapcar #'identity "jklasdfghyuiopqwertnmzxcvb"))
 
 (defface jaunte-hint-face
   '((t
