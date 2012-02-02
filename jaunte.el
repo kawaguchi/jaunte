@@ -8,6 +8,9 @@
 ;; (require 'jaunte)
 ;; (global-set-key (kbd "C-c C-j") 'jaunte)
 
+(eval-when-compile
+  (require 'cl))
+
 (defvar jaunte-keys (mapcar #'identity "jklasdfghyuiopqwertnmzxcvb"))
 
 (defface jaunte-hint-face
@@ -40,11 +43,18 @@
 
 (defvar jaunte--hints nil)
 
+(defvar jaunte-global-hint-unit 'word
+  "Global hint unit. You can set this parameter same as `thing-at-point'")
+
+(defvar jaunte-local-hint-unit nil
+  "local hint unit. This variable is buffer local variable")
+(make-local-variable 'jaunte-local-hint-unit)
+
 (defun jaunte-forward-word ()
   "Move to beginning of a forward word, and return point."
   (interactive)
   (if (looking-at "\\w")
-      (forward-word))
+      (forward-thing (or jaunte-local-hint-unit jaunte-global-hint-unit)))
   (if (re-search-forward "\\w" nil 'eob)
       (backward-char))
   (point))
