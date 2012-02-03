@@ -48,7 +48,7 @@
 
 (defvar jaunte-local-hint-unit nil
   "local hint unit. This variable is buffer local variable")
-(make-local-variable 'jaunte-local-hint-unit)
+(make-variable-buffer-local 'jaunte-local-hint-unit)
 
 (defun jaunte-forward-word ()
   "Move to beginning of a forward word, and return point."
