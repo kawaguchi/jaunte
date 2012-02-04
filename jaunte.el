@@ -8,9 +8,6 @@
 ;; (require 'jaunte)
 ;; (global-set-key (kbd "C-c C-j") 'jaunte)
 
-(eval-when-compile
-  (require 'cl))
-
 (defvar jaunte-keys (mapcar #'identity "jklasdfghyuiopqwertnmzxcvb"))
 
 (defface jaunte-hint-face
@@ -70,7 +67,7 @@
 (defun jaunte-show-hints ()
   (let ((index 0))
     (jaunte-cycle-reset 'jaunte-hint-faces)
-    (mapcar
+    (mapc
      (lambda (window)
        (save-excursion
          (save-window-excursion
@@ -101,7 +98,7 @@
 
 (defun jaunte-search (key &optional perfect-match)
   (let (result)
-    (mapcar
+    (mapc
      (lambda (hint)
        (if (jaunte-hint-match key hint perfect-match)
            (add-to-list 'result hint)
@@ -114,7 +111,7 @@
   (setq jaunte--hints nil))
 
 (defun jaunte-delete-overlays ()
-  (mapcar
+  (mapc
    (lambda (hint)
      (delete-overlay (gethash 'overlay hint)))
    jaunte--hints))
@@ -130,7 +127,7 @@
         (setq rest (- rest (char-width (char-after))))
         (forward-char))
 
-      (if (and (oddp width)
+      (if (and (eq (logand width 1) 1)
                (= 2 (char-width (char-before))))
           (setq key (concat key " ")))
 
