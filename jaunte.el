@@ -65,30 +65,34 @@
     hint))
 
 (defun jaunte-show-hints ()
-  (let ((index 0))
-    (jaunte-cycle-reset 'jaunte-hint-faces)
-    (mapc
-     (lambda (window)
-       (save-excursion
-         (save-window-excursion
-           (select-window window)
-           (move-to-window-line 0)
-           (let ((point (if (looking-at "\\w")
-                            (point)
-                            (jaunte-forward-word)))
-                 (window-end (window-end window))
-                 (key (jaunte-make-key index)))
-             (while (< point window-end)
-               (add-to-list 'jaunte--hints
-                            (jaunte-make-hint (jaunte-make-key index)
-                                              (jaunte-make-overlay point key)
-                                              window
-                                              point))
-               (jaunte-forward-word)
-               (setq index (1+ index)
-                     point (point)
-                     key (jaunte-make-key index)))))))
-     (window-list))))
+  (condition-case err
+      (let ((index 0))
+        (jaunte-cycle-reset 'jaunte-hint-faces)
+        (mapc
+         (lambda (window)
+           (save-excursion
+             (save-window-excursion
+               (select-window window)
+               (move-to-window-line 0)
+               (let ((point (if (looking-at "\\w")
+                                (point)
+                              (jaunte-forward-word)))
+                     (window-end (window-end window))
+                     (key (jaunte-make-key index)))
+                 (while (< point window-end)
+                   (add-to-list 'jaunte--hints
+                                (jaunte-make-hint (jaunte-make-key index)
+                                                  (jaunte-make-overlay point key)
+                                                  window
+                                                  point))
+                   (jaunte-forward-word)
+                   (setq index (1+ index)
+                         point (point)
+                         key (jaunte-make-key index)))))))
+         (window-list)))
+    (error
+     (jaunte-remove-hints)
+     (error (error-message-string err)))))
 
 (defun jaunte-hint-match (key hint &optional perfect-match)
   (let ((hint-key (gethash 'key hint)))
