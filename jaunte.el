@@ -40,18 +40,15 @@
 
 (defvar jaunte--hints nil)
 
-(defvar jaunte-global-hint-unit 'word
-  "Global hint unit. You can set this parameter same as `thing-at-point'")
-
-(defvar jaunte-local-hint-unit nil
-  "local hint unit. This variable is buffer local variable")
-(make-variable-buffer-local 'jaunte-local-hint-unit)
+(defvar jaunte-hint-unit 'word
+  "Hint unit. You can set this parameter same as `thing-at-point'.")
+(make-variable-buffer-local 'jaunte-hint-unit)
 
 (defun jaunte-forward-word ()
   "Move to beginning of a forward word, and return point."
   (interactive)
   (if (looking-at "\\w")
-      (forward-thing (or jaunte-local-hint-unit jaunte-global-hint-unit)))
+      (forward-thing jaunte-hint-unit))
   (if (re-search-forward "\\w" nil 'eob)
       (backward-char))
   (point))
