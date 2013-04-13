@@ -1,4 +1,4 @@
-;; jaunte.el --- Emacs Hit a Hint
+;;; jaunte.el --- Emacs Hit a Hint
 
 ;; 参考
 ;; yafastnav.el
