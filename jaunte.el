@@ -3,7 +3,7 @@
 ;; Copyright (C) 2010-2018 by Masaya Kawaguchi
 
 ;; Author   : Masaya Kawaguchi <masayakawaguchi@gmail.com>
-;; URL      : https://github.com/kawaguchi/jaunte.el
+;; URL      : https://github.com/kawaguchi/jaunte
 ;; Version  : 1.0.0
 ;; Keywords : cursor
 ;; Package-Requires: ((cl-lib "0.3"))
