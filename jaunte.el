@@ -1,5 +1,7 @@
 ;;; jaunte.el --- Emacs Hit a Hint
 
+;; Package-Requires: ((cl-lib "0.3"))
+
 ;; 参考
 ;; yafastnav.el
 ;; vimperator
@@ -8,6 +10,7 @@
 ;; (require 'jaunte)
 ;; (global-set-key (kbd "C-c C-j") 'jaunte)
 
+(require 'cl-lib)
 (defvar jaunte-keys (mapcar #'identity "jklasdfghyuiopqwertnmzxcvb"))
 
 (defface jaunte-hint-face
@@ -47,10 +50,18 @@
 (defun jaunte-forward-word ()
   "Move to beginning of a forward word, and return point."
   (interactive)
-  (if (looking-at "\\w")
-      (forward-thing jaunte-hint-unit))
-  (if (re-search-forward "\\w" nil 'eob)
-      (backward-char))
+  (cl-loop do
+           (when (looking-at "\\w")
+             (forward-thing jaunte-hint-unit))
+           (when (re-search-forward "\\w" nil 'eob)
+             (backward-char))
+           while (or (invisible-p (point))
+                     (catch 'jaunte-forward-word-catch
+                       (mapc #'(lambda (overlay)
+                                 (when (overlay-get overlay 'display)
+                                   (throw 'jaunte-forward-word-catch t)))
+                             (overlays-at (point)))
+                       nil)))
   (point))
 
 (defun jaunte-make-hint (key overlay window point)
@@ -151,6 +162,7 @@
   (select-window (gethash 'window hint))
   (goto-char (gethash 'point hint)))
 
+;;;###autoload
 (defun jaunte ()
   (interactive)
   (jaunte-show-hints)
